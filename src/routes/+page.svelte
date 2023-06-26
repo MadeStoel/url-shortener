@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import CopyToClipboardSvg from '$lib/assets/icons/copy-to-clipboard.svg';
-	import type { ActionData } from './$types';
+	import type { ActionData, PageServerData } from './$types';
 	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
 
 	export let form: ActionData;
+	export let data: PageServerData;
+
 	let urlElement: HTMLAnchorElement;
 
 	const popupClick: PopupSettings = {
@@ -60,6 +62,16 @@
 		<aside class="alert variant-ghost-error">
 			<div class="alert-message">
 				<p>Invalid URL! Only Https URLs are accepted.</p>
+			</div>
+		</aside>
+	{/if}
+
+	{#if data?.corruptUrl && !(form?.invalidUrl || form?.shortUrl)}
+		<aside class="alert variant-ghost-error">
+			<div class="alert-message">
+				<p>
+					The provided URL is no longer accessible. Why don't you make a new one while you're here?
+				</p>
 			</div>
 		</aside>
 	{/if}

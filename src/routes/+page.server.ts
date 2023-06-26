@@ -2,6 +2,16 @@ import prisma from '$lib/server/prisma';
 import { PUBLIC_CLIENT_URL } from '$env/static/public';
 import { fail, type Actions } from '@sveltejs/kit';
 
+export function load({ cookies }) {
+	const corruptUrl = cookies.get('corruptUrl');
+
+	if (corruptUrl) cookies.delete('corruptUrl');
+
+	return {
+		corruptUrl
+	};
+}
+
 export const actions: Actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData();
