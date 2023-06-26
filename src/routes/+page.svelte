@@ -1,17 +1,51 @@
 <script lang="ts">
-	import { enhance } from "$app/forms";
+	import { enhance } from '$app/forms';
+	import CopyToClipboardSvg from '$lib/assets/icons/copy-to-clipboard.svg';
+	import type { ActionData } from './$types';
+
+	export let form: ActionData;
+	let urlElement: HTMLAnchorElement;
+
+	function copyToClipboard(): void {
+		navigator.clipboard.writeText(urlElement.text);
+	}
 </script>
 
 <section class="flex flex-col items-center justify-center h-full">
-    <h1 class="h1 text-center mb-8">Url shortener</h1>
+	<h1 class="h1 text-center mb-8">Url shortener</h1>
 
-    <form class="w-1/2" method="POST" use:enhance>
-        <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
-            <div class="input-group-shim">https://</div>
+	<form class="w-1/2 mb-4" method="POST" use:enhance>
+		<div class="input-group input-group-divider grid-cols-[1fr_auto]">
+			<input name="url" type="search" placeholder="Insert URL..." />
 
-            <input name="url" type="search" placeholder="Insert URL..." />
+			<button class="variant-filled-secondary">Submit</button>
+		</div>
+	</form>
 
-            <button class="variant-filled-secondary">Submit</button>
-        </div>
-    </form>
+	{#if form?.shortUrl}
+		<aside class="alert variant-ghost-success">
+			<h3 class="h3">URL:</h3>
+
+			<div class="alert-message">
+				<a bind:this={urlElement} href={form.shortUrl}>{form.shortUrl}</a>
+			</div>
+
+			<div class="alert-actions">
+				<img
+					class="h-8 cursor-pointer"
+					on:click={copyToClipboard}
+					src={CopyToClipboardSvg}
+					alt="Copy to clipboard"
+				/>
+			</div>
+		</aside>
+	{/if}
+
+	{#if form?.invalidUrl}
+		<aside class="alert variant-ghost-error">
+			<div class="alert-message">
+				<p>Invalid URL! Only Https URLs are accepted.</p>
+			</div>
+		</aside>
+	{/if}
 </section>
