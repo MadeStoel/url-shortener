@@ -25,7 +25,7 @@
 
 	<form class="w-1/2 mb-4" method="POST" use:enhance>
 		<div class="input-group input-group-divider grid-cols-[1fr_auto]">
-			<input name="url" type="search" placeholder="Insert URL..." />
+			<input required name="url" type="search" placeholder="Insert URL..." />
 
 			<button class="variant-filled-secondary">Submit</button>
 		</div>
